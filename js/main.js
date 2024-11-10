@@ -1,5 +1,3 @@
-const selectMenu = document.getElementById("selectMenu");
-
 const createElemWithText = (elType = "p", textContent = "", className) => {
     const newEl = document.createElement(elType);
     const newContent = document.createTextNode(textContent);
@@ -83,16 +81,23 @@ const createComments = (comments) =>{
     const dFrag = document.createDocumentFragment();
     comments.forEach(comment=>{
        const article = document.createElement("article");
-       const heading = document.createElement("h3");
-       heading.textContent = comment.name;
-       const commentBody = document.createElement("p");
-       commentBody.textContent = comment.body;
-       const poster = document.createElement("p");
-       poster.textContent = `From: ${comment.email}`;
+       const heading = createElemWithText("h3", comment.name)
+       const body = createElemWithText("p", comment.body)
+       const poster = createElemWithText("p",  `From: ${comment.email}`);
        article.appendChild(heading);
-       article.appendChild(commentBody);
+       article.appendChild(body);
        article.appendChild(poster);
        dFrag.appendChild(article);
     })
     return dFrag;
+ };
+
+ const populateSelectMenu = users => {
+    if (!users) return undefined;
+    const selectMenu = document.getElementById("selectMenu");
+    options = createSelectOptions(users);
+    options.forEach(option => {
+        selectMenu.appendChild(option);
+    })
+    return selectMenu;
  }
