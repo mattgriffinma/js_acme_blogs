@@ -101,3 +101,64 @@ const createComments = (comments) =>{
     })
     return selectMenu;
  }
+
+ const getUsers = async () => {
+    const url = "https://jsonplaceholder.typicode.com/users/"
+    try{
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }   
+        const users = await response.json();
+        return users;
+    } catch(err) {
+        console.error(err.message);
+    }
+ }
+
+ const getUserPosts = async (userId) => {
+    if (!userId) return undefined;
+    const url = `https://jsonplaceholder.typicode.com/posts?userId=${userId}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }   
+        const posts = await response.json();
+        return posts;
+    } catch(err) {
+        console.error(err.message);
+    }
+ }
+
+ const getUser = async userId => {
+    if (!userId) return undefined;
+    const url = `https://jsonplaceholder.typicode.com/users?id=${userId}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }   
+        const user = await response.json();
+        return user[0];
+    } catch(err) {
+        console.error(err.message);
+    }
+ }
+
+ const getPostComments = async (postId) => {
+    if (!postId) return undefined;
+    const url = `https://jsonplaceholder.typicode.com/comments?postId=${postId}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }   
+        const comments = await response.json();
+        return comments;
+    } catch(err) {
+        console.error(err.message);
+    }
+ }
+
+ 
