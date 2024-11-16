@@ -176,21 +176,19 @@ const createComments = (comments) =>{
  const createPosts = async postsData =>{
     if (!postsData) return undefined;
     const dFrag = document.createDocumentFragment();
-    postsData.forEach(async (post)=>{
+    for (let postKey in postsData){
+        let post = postsData[postKey];
         const article = document.createElement("article");
-    
+        
         const h2 = createElemWithText("h2", post.title);
         const bodyPara = createElemWithText("p", post.body);
         const idPara = createElemWithText("p", `Post ID: ${post.id}`);
         const  author = await getUser(post.userId);
-        //console.log(author.name +" " + author.company.name);
         const authorPara = createElemWithText("p", `Author: ${author.name} with ${author.company.name}`);
         const catchPhrase = createElemWithText("p", author.company.catchPhrase);
         const button = createElemWithText("button", "Show Comments");
         button.dataset.postId = post.id;
         const section = await displayComments(post.id);
-        
-        
         
         article.appendChild(h2);
         article.appendChild(bodyPara);
@@ -202,27 +200,27 @@ const createComments = (comments) =>{
         
         dFrag.appendChild(article);
         
-    })
-    //console.log(dFrag);
+       
+        
+    }
     return dFrag;    
  }
 
- /*
+ 
  const displayPosts = async postsData =>{
-    const main = document.getElementByTagName("main");
+    const main = document.getElementsByTagName("main")[0];
     if (!postsData){
-        para = document.createElement("p")
+        para = createElemWithText("p", "Select an Employee to display their posts.");
         para.classList.add("default-text");
         return para;
     } else {
         const posts = await createPosts(postsData);
         main.appendChild(posts);
-        console.log(posts);
         return posts;
     }    
  }
-    */
-/*
+    
+
  const toggleComments = (event, postId) => {
     if (!event || !postId) return undefined;
     event.target.listener = true;
@@ -232,42 +230,44 @@ const createComments = (comments) =>{
  }
 
  const refreshPosts =  async (posts) => {
-    const main = document.getElementByTagName("main");
+    if (!posts) return undefined;
+    const main = document.getElementsByTagName("main")[0];
     const deafButtons = removeButtonListeners();
     const emptyMain = deleteChildElements(main);
     const dFrag = await displayPosts(posts);
     const listeningButtons = addButtonListeners();
-    return [deafButtons, main, dFrag, listeningButtons];
+    return [deafButtons, emptyMain, dFrag, listeningButtons];
  }
-    */
 
- /*
  const selectMenuChangeEventHandler = async (event) => {
     if (!event) return undefined;
     const selectMenu = document.getElementById("selectMenu");
     selectMenu.disabled = true;
-    const userId = event.target.value || 1;
+    console.log(event);
+    const userId = event?.target?.value || 1;
+    
     const posts = await getUserPosts(userId);
     const refreshArrayPosts = await refreshPosts(posts);
     selectMenu.disabled = false;
-    return [userId, posts, refreshArrayPosts];
+    const arr = [userId, posts, refreshArrayPosts];
+    return arr;
  }
-*/
 
-/*
+
+ 
 const initPage = async ()=> {
     const users = await getUsers();
     const select = populateSelectMenu(users);
     return [users,select];
 }
-    */
+    
 
-/*
+
 const initApp = async () => {
     initPage();
     const selectMenu = document.getElementById("selectMenu");
     selectMenu.addEventListener("change", selectMenuChangeEventHandler);
 };
-*/
 
-//document.addEventListener("DOMContentLoaded", initApp);
+
+document.addEventListener("DOMContentLoaded", initApp);
